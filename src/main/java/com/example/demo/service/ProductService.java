@@ -2,10 +2,8 @@ package com.example.demo.service;
 
 
 import com.example.demo.entity.Product;
-import com.example.demo.madel.ProductModel;
 import com.example.demo.repository.ProductRepository;
 import jakarta.persistence.metamodel.SingularAttribute;
-import jdk.internal.module.ModulePath;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,11 +13,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class ProductService {
@@ -38,6 +33,10 @@ public class ProductService {
     //
     public List<Product> saveProduct(List<Product> products) {
         return repository.saveAll(products);
+    }
+
+    public List<Product> getProducts(){
+        return repository.findAll();
     }
 
     public ProductRepository getRepository() {
@@ -79,51 +78,57 @@ public class ProductService {
     }
 
 
-    public List<ProductModel> getProducts() {
-
-        List<ProductModel> list = new ArrayList<>();
-        List<Product> productList = repository.findAll();
-        for (Product product : productList) {
-            ProductModel productModel = new ProductModel();
-            productModel.setId(product.getId());
-            productModel.setName(product.getName());
-            productModel.setPrice(product.getPrice());
-            productModel.setQuantity(product.getQuantity());
-            list.add(productModel);
-
-        }
-
-         list.stream().filter(s->s!=null).map(m->m.getName()+m.getName()).forEach(s->System.out.println(s));
-        return list;
-
-
-    }
-
-
-    public ProductModel getProductById(int id) {
+//    public List<ProductModel> getProducts() {
+//
+//        List<ProductModel> list = new ArrayList<>();
+//        List<Product> productList = repository.findAll();
+//        for (Product product : productList) {
+//            ProductModel productModel = new ProductModel();
+//            productModel.setId(product.getId());
+//            productModel.setName(product.getName());
+//            productModel.setPrice(product.getPrice());
+//            productModel.setQuantity(product.getQuantity());
+//            list.add(productModel);
+//
+//        }
+//
+//         list.stream().filter(s->s!=null).map(m->m.getName()+m.getName()).forEach(s->System.out.println(s));
+//        return list;
+//
+//
+//    }
 
 
-        ProductRepository repository = null;
-        Product product = repository.findById(id).orElse(null);
+//    public ProductModel getProductById(int id) {
+//
+//
+//        ProductRepository repository = null;
+//        Product product = repository.findById(id).orElse(null);
 //        productModel.setId(product.getId());
 //        productModel.setName(product.getName());
 //        productModel.setPrice(product.getPrice());
 //        productModel.setQuantity(product.getQuantity());
-        ProductModel productModel = this.modelMapper.map(product, ProductModel.class);
-        return productModel;
+//        ProductModel productModel = this.modelMapper.map(product, ProductModel.class);
+//        return productModel;
+//    }
+
+    public Product getProductById(int id){
+        return repository.findById(id).orElse(null);
     }
 
-    public ProductModel getProductByName(String name) {
+//    public ProductModel getProductByName(String name) {
 //        return repository.findByName(name);
-        Product product = repository.findByName(name);
+//        Product product = repository.findByName(name);
 //        productModel.setName(product.getName());
 //        productModel.setId(product.getId());
 //        productModel.setPrice(product.getPrice());
 //        productModel.setQuantity(product.getQuantity());
-        ProductModel productModel = this.modelMapper.map(product, ProductModel.class);
-        return productModel;
-    }
-
+//        ProductModel productModel = this.modelMapper.map(product, ProductModel.class);
+//        return productModel;
+//    }
+      public Product getProductByName(String name){
+        return  repository.findByName(name);
+      }
     //    public String deleteProduct(int id) {
 ////        repository.deleteById(id);
 ////        return "product removed!! "+id;
@@ -137,17 +142,17 @@ public class ProductService {
 
         repository.deleteById(id);
 
-        return "product removed" + id;
+       return "product removed" + id;
     }
 
-    public ProductModel updateProduct(ProductModel productModel, int id) {
+    public Product updateProduct(Product product, int id) {
 
 
-        Product product = repository.findById(id).orElse(null);
-        productModel.setId(product.getId());
-        product = this.modelMapper.map(productModel, Product.class);
+        product = repository.findById(id).orElse(null);
+//        productModel.setId(product.getId());
+//        product = this.modelMapper.map(productModel, Product.class);
         repository.save(product);
-        return productModel;
+        return product;
     }
 
 }

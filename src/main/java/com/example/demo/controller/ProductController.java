@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Product;
-import com.example.demo.madel.ProductModel;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,22 +23,22 @@ public class ProductController {
         return service.saveProduct(products);
     }
     @GetMapping("/products")
-    public List<ProductModel> findAllProducts(){
+    public List<Product> findAllProducts(List<Product>products){
     return service.getProducts();
     }
     @GetMapping("/productById/{id}")
-    public ProductModel findProductById(@PathVariable int id){
+    public Product findProductById(@PathVariable int id){
         return service.getProductById(id);
     }
     @GetMapping("/product/{name}")
-    public ProductModel findProductByName(@PathVariable String name){
+    public Product findProductByName(@PathVariable String name){
         return service.getProductByName(name);
 
 
     }
     @PutMapping("/update/{id}")
-    public ProductModel updateProduct(@PathVariable int id, @RequestBody ProductModel productModel){
-        return service.updateProduct(productModel, id);
+    public Product updateProduct(@PathVariable int id, @RequestBody Product product){
+        return service.updateProduct(product, id);
     }
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable int id){
